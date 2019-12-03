@@ -2,6 +2,7 @@ package com.example.consumerdemo.controller;
 
 
 import com.example.consumerdemo.dto.UserDto;
+import com.example.consumerdemo.interfaces.UserClient;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -17,10 +18,10 @@ import java.util.List;
 @RequestMapping("/consumer")
 public class consumerController {
 
-    //@Autowired
-    //private DiscoveryClient discoveryClient;
     @Autowired
-    private RestTemplate restTemplate;
+    private UserClient feignClient;
+/*    @Autowired
+    private RestTemplate restTemplate;*/
 
     @RequestMapping("/hello")
     @ResponseBody
@@ -28,8 +29,9 @@ public class consumerController {
         //final List<ServiceInstance> instances = discoveryClient.getInstances("user-server");
         //ServiceInstance serviceInstance = instances.get(0);
         //String url="http://"+ serviceInstance.getHost()+":"+serviceInstance.getPort()+"/user/hello";
-        String url="http://user-server/user/hello";
-        UserDto userDto = restTemplate.getForObject(url, UserDto.class);
+        //String url="http://user-server/user/hello";
+        //UserDto userDto = restTemplate.getForObject(url, UserDto.class);
+        final UserDto userDto = feignClient.getUser();
         return userDto;
     }
 }
